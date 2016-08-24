@@ -23,12 +23,7 @@ juke.controller('PlayerCtrl', function ($scope, $rootScope, $interval, PlayerFac
 
   $scope.next = PlayerFactory.next.bind(PlayerFactory);
   $scope.prev = PlayerFactory.previous.bind(PlayerFactory);
-
-
-  $interval(function(){
-    $scope.progress = PlayerFactory.getProgress() * 100;
-  }, 500)
-
+  //$rootScope.progress = PlayerFactory.getProgress() * 100;
 
   $scope.handleProgressClick = function (evt) {
     PlayerFactory.setProgress(evt.offsetX / evt.currentTarget.scrollWidth);

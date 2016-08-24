@@ -1,4 +1,4 @@
-juke.factory('AlbumFactory', function($http){
+juke.factory('AlbumFactory', function($http, SongFactory){
 
   var fetchAll = function() {
     return $http.get('/api/albums/')
@@ -16,10 +16,7 @@ juke.factory('AlbumFactory', function($http){
     .then(function (res) { return res.data; })
     .then(function (album) {
       album.imageUrl = '/api/albums/' + album.id + '/image';
-      album.songs.forEach(function (song, i) {
-        song.audioUrl = '/api/songs/' + song.id + '/audio';
-        song.albumIndex = i;
-      });
+      album.songs = SongFactory.convertSongs(album);
       return album;
     })
   };

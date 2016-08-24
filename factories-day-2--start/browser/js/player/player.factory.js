@@ -1,13 +1,16 @@
 'use strict';
 
-juke.factory('PlayerFactory', function(){
+juke.factory('PlayerFactory', function($rootScope){
 
   var audio = document.createElement('audio');
   var currentSong = null;
   var queue = null;
   var queueIdx = 0;
 
-
+  audio.addEventListener('timeupdate', function(){
+    $rootScope.progress = getProgress() * 100;
+    $rootScope.$digest();
+  });
 
   var pause = function(){
     audio.pause();
@@ -30,7 +33,6 @@ juke.factory('PlayerFactory', function(){
   }
 
   var isPlaying = function() {
-    console.log('paused?', audio.paused);
     return !audio.paused;
   }
 

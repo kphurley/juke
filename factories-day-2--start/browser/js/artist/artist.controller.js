@@ -1,31 +1,30 @@
-/* global juke */
-'use strict';
+juke.controller('ArtistCtrl', function($scope, $rootScope, $log, ArtistFactory, PlayerFactory){
 
-juke.controller('AlbumCtrl', function ($scope, $http, $rootScope, $log, StatsFactory, AlbumFactory, PlayerFactory) {
-
-  $scope.$on('showAlbum', function(event, data){
+  $scope.$on('showOneArtist', function(event, data){
     $rootScope.$broadcast('hideAllTheThings');
-    AlbumFactory.fetchById(data.id)
-    .then(function (album) {
-      $scope.album = album;
-      $scope.showAlbum = true;
+    ArtistFactory.fetchById(data.id)
+    .then(function (artist) {
+      $scope.artist = artist;
+      $scope.showArtist = true;
     })
     .catch($log.error);
   })
 
   $scope.$on('hideAllTheThings', function(event, data){
-    $scope.showAlbum = false;
-  });
+    $scope.showArtist = false;
+  })
 
+  $scope.showAlbum = function(album){
+    $rootScope.$broadcast('showAlbum', album);
+  }
 
-  // main toggle
   $scope.toggle = function (song) {
     if (PlayerFactory.isPlaying() && song === PlayerFactory.getCurrentSong()) {
       //$rootScope.$broadcast('pause');
       PlayerFactory.pause();
     } else {
       //$rootScope.$broadcast('play', song);
-      PlayerFactory.start(song, $scope.album.songs);
+      PlayerFactory.start(song, $scope.artist.songs);
     }
   };
 
