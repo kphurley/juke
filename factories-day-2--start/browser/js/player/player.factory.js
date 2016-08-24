@@ -3,6 +3,7 @@
 juke.factory('PlayerFactory', function($rootScope){
 
   var audio = document.createElement('audio');
+  var nextAudio = document.createElement('audio');
   var currentSong = null;
   var queue = null;
   var queueIdx = 0;
@@ -12,20 +13,40 @@ juke.factory('PlayerFactory', function($rootScope){
     $rootScope.$digest();
   });
 
+  audio.addEventListener('play', function(){
+    ///---Preload next song
+    nextAudio.src = queue[queueIdx + 1].audioUrl;
+    nextAudio.load();
+    //console.log('canplaythrough called')
+  })
+
   var pause = function(){
     audio.pause();
   }
 
   var start = function(song, collection){
-    queue = collection || null;
-    if (queue){
-      queueIdx = queue.indexOf(song);
-    }
+
     this.pause();
+
+    if(nextAudio.src === document.origin + song.audioUrl){
+      audio = nextAudio;
+      //console.log('audio reassigned?');
+      //audio.play();
+    }
+    else{
+      queue = collection || null;
+      if (queue){
+        queueIdx = queue.indexOf(song);
+      }
+      audio.src = song.audioUrl;
+      audio.load();
+    }
     currentSong = song;
-    audio.src = song.audioUrl;
-    audio.load();
     audio.play();
+
+
+
+
   }
 
   var resume = function(){

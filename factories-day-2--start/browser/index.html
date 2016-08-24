@@ -18,10 +18,11 @@
     <script src="/js/artist/artists.controller.js" defer></script>
     <script src="/js/artist/artist.controller.js" defer></script>
     <script src="/js/song/song.factory.js" defer></script>
+    <script src="/js/main.controller.js" defer></script>
 
   </head>
   <body ng-app="juke">
-    <div id="main" class="container-fluid">
+    <div id="main" class="container-fluid" ng-controller="MainCtrl">
       <div class="col-xs-2">
         <sidebar ng-controller="SidePanelCtrl">
           <img src="juke.svg" class="logo">
